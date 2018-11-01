@@ -29,7 +29,8 @@ class ActivityUserListeners implements ShouldQueue
   /**
    * Handle the event.
    *
-   * @param \Verahkus\UserActivity\Events\ActivityUser|ActivityUserEvent $event
+   * @param  ActivityUserEvent  $event
+   * @return void
    */
   public function handle(ActivityUser $event)
   {
@@ -37,5 +38,25 @@ class ActivityUserListeners implements ShouldQueue
     $tmp_user->update(['last_activity'=>Carbon::now()]);
 
     dd($tmp_user);
+//    if ($event->writeActivity) {
+//      $this->writeActivity($event->user,$event->request);
+//    }
+//    $expiresAt = Carbon::now()->addMinutes(5);
+//    Cache::tags(['users_online'])->put('user-is-online-' .$tmp_user->id, $tmp_user->id, $expiresAt);
+  }
+
+  /**
+   * @author verahkus <dev@verahkus.ru>
+   * запись посещения в базу (user_activity)
+   * @param $user
+   * @param $data
+   */
+  public function writeActivity($user, $data) {
+    $user->activity()->create([
+      'page' => $data['REQUEST_URI'],
+      'ip' => $data['REMOTE_ADDR'],
+      'user_agent' => $data['HTTP_USER_AGENT'],
+      'server' => collect($data),
+    ]);
   }
 }
