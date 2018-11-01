@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
+//use Verahkus\UserActivity\ActivityUserListeners;
+use Verahkus\UserActivity\Events\ActivityUser;
+
+//use Verahkus\UserActivity\Listeners\ActivityUserListenerss;
 
 class ActivityUserMiddleware
 {
@@ -20,8 +24,7 @@ class ActivityUserMiddleware
    */
   public function handle($request, Closure $next)
   {
-    dd(Auth::user());
-//    ActivityUser::dispatch(Auth::user(),$request->server(),true);
+    ActivityUser::dispatch(Auth::user(),$request->server(),true);
     return $next($request);
   }
 }

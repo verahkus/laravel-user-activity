@@ -6,17 +6,6 @@ use Illuminate\Support\ServiceProvider;
 class UserActivityServiceProvider extends ServiceProvider
 {
   /**
-   * The event listener mappings for the application.
-   *
-   * @var array
-   */
-  protected $listen = [
-    'Verahkus\UserActivity\Events\ActivityUser' => [
-      'Verahkus\UserActivity\Listeners\ActivityUser',
-    ],
-  ];
-
-  /**
    * Bootstrap the application services.
    *
    * @return void
