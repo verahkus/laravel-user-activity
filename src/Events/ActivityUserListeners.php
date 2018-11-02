@@ -29,20 +29,17 @@ class ActivityUserListeners implements ShouldQueue
   /**
    * Handle the event.
    *
-   * @param  ActivityUserEvent  $event
-   * @return void
+   * @param \Verahkus\UserActivity\Events\ActivityUser|ActivityUser $event
    */
   public function handle(ActivityUser $event)
   {
     $tmp_user = $event->user;
     $tmp_user->update(['last_activity'=>Carbon::now()]);
 
+    if ($event->writeActivity) {
+      $this->writeActivity($event->user,$event->request);
+    }
     dd($tmp_user);
-//    if ($event->writeActivity) {
-//      $this->writeActivity($event->user,$event->request);
-//    }
-//    $expiresAt = Carbon::now()->addMinutes(5);
-//    Cache::tags(['users_online'])->put('user-is-online-' .$tmp_user->id, $tmp_user->id, $expiresAt);
   }
 
   /**

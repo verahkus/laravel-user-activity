@@ -16,6 +16,20 @@ class AddTableUsersColumnLastActivity extends Migration
     Schema::table('users', function (Blueprint $table) {
       $table->dateTime('last_activity')->nullable();
     });
+    Schema::create('user_activities', function (Blueprint $table) {
+      $table->increments('id');
+      $table->text('page');
+
+      $table->string('ip');
+      $table->string('user_agent');
+
+      $table->json('server');
+
+      $table->integer('user_id')->unsigned();
+      $table->foreign('user_id')->references('id')->on('users')
+        ->onUpdate('cascade')->onDelete('cascade');
+      $table->timestamps();
+    });
   }
 
   /**
@@ -28,5 +42,6 @@ class AddTableUsersColumnLastActivity extends Migration
     Schema::table('users', function (Blueprint $table) {
       $table->dropColumn('last_activity');
     });
+    Schema::dropIfExists('user_activities');
   }
 }
