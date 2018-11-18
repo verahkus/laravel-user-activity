@@ -2,6 +2,6 @@
 
 return [
 
-  'enabled' => env('USER_ACTIVITY_ENABLED', true)
+    'enabled' => env('USER_ACTIVITY_ENABLED', true)
 
 ];

@@ -23,12 +23,22 @@ php artisan vendor:publish --provider="Verahkus\UserActivity\UserActivityService
       ]
     ];
 ```
-5. Open you User.php and add in $fillable array:
+5. Open you model User.php:
+* add in $fillable array:
 ```
     protected $fillable = [
         ...,
         'last_activity'
     ];
+```
+* add trait:
+```
+class User extends Authenticatable
+{
+    ...
+    use UserActivityTrait;
+    ...
+}
 ```
 
    
