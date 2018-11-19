@@ -3,29 +3,40 @@
 namespace Verahkus\UserActivity\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Model\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class UserActivityController extends Controller
 {
+
+    /**
+     * @param (int) $user_id
+     * @return \Illuminate\Contracts\Auth\Access\Authorizable
+     */
+    protected function getUser($user_id)
+    {
+        return (is_null($user_id))? Auth::user(): User::find((int)$user_id);
+    }
+
+    protected function getTimeLogout($user)
+    {
+        return Carbon::parse($user->last_activity)->addSeconds(config('user-activity.timeLogout'));
+    }
+
+    protected function getLogout($user)
+    {
+        return ($this->getTimeLogout($user) < Carbon::now())? true:false;
+    }
+
     public function getUserLastActivity($user_id=null)
     {
-        dd(Auth::user());
-        $user = (is_null($user_id))? Auth::user(): User::find((int)$user_id);
+        $user = $this->getUser($user_id);
 
-        dd($user);
-
-//        if (Carbon::parse(Auth::user()->last_time)->addSeconds(env('TIME_LOGOUT'))<Carbon::now()) {
-//            $logout = false;
-//        } else {
-//            $logout=true;
-//        }
-//
-//        return response()->json([
-//            'success' => true,
-//            'last_time'=>Auth::user()->last_time,
-//            'time_logout'=>Carbon::parse(Auth::user()->last_time)->addSeconds(env('TIME_LOGOUT')),
-//            'status'=>Auth::user()->status,
-//            'status_logout'=>$logout
-//        ]);
+        return response()->json([
+            'last_time'=>$user->last_activity,
+            'time_logout'=>$this->getTimeLogout($user)->toDateTimeString(),
+            'logout'=>$this->getLogout($user)
+        ]);
     }
 }
