@@ -29,7 +29,7 @@ class UserActivityController extends Controller
         return ($this->getTimeLogout($user) < Carbon::now())? true:false;
     }
 
-    public function getUserLastActivity($user_id=null)
+    public function userLastActivity($user_id=null)
     {
         $user = $this->getUser($user_id);
 
