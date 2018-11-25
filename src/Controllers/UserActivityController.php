@@ -5,7 +5,9 @@ namespace Verahkus\UserActivity\Controllers;
 use App\Http\Controllers\Controller;
 use App\Model\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Verahkus\UserActivity\Events\ActivityUser;
 
 class UserActivityController extends Controller
 {
@@ -38,5 +40,11 @@ class UserActivityController extends Controller
             'time_logout'=>$this->getTimeLogout($user)->toDateTimeString(),
             'logout'=>$this->getLogout($user)
         ]);
+    }
+
+    public function userSetActivity(Request $request)
+    {
+        ActivityUser::dispatch(Auth::user(),$request->server(),false);
+        return response()->json(['logout'=>false]);
     }
 }
