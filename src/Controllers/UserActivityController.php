@@ -47,4 +47,9 @@ class UserActivityController extends Controller
         ActivityUser::dispatch(Auth::user(),$request->server(),false);
         return response()->json(['logout'=>false]);
     }
+
+    public function logoutPage() {
+        Auth::logout();
+        return view('user-activity::logout');
+    }
 }
