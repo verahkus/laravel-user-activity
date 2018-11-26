@@ -72,8 +72,9 @@
 
     <div class="content">
         <div class="title m-b-md">
-            The session ended.
+            The session ended
         </div>
+        <h2>in {{\Carbon\Carbon::now()->toTimeString()}}</h2>
     </div>
 </div>
 </body>
